@@ -15,12 +15,12 @@ function setup() {
   database=firebase.database();
   createCanvas(1500,700);
 
-  balloon=createSprite(250,650,150,150);
+  balloon=createSprite(250,650,250,650);
   balloon.addAnimation("hotAirBalloon",balloonImage1);
   balloon.scale=0.5;
 
   var balloonHeight=database.ref('balloon/height');
-  balloonHeight.on("value",readHeight, showError);
+  balloonHeight.on("value",readHeight, console.log("error"));
   textSize(20); 
 }
 
@@ -52,11 +52,12 @@ function draw() {
   stroke("white");
   textSize(25);
   text("**Use arrow keys to move Hot Air Balloon!",40,40);
+
 }
 
 
 function updateHeight(x,y){
-  database.ref('balloon/height').set({
+  database.ref('/balloon/height').update({
     'x': height.x + x ,
     'y': height.y + y
   })
@@ -64,7 +65,6 @@ function updateHeight(x,y){
 
 function readHeight(data){
   height = data.val();
-  console.log(height.x);
   balloon.x = height.x;
   balloon.y = height.y;
 }
